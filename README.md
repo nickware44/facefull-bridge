@@ -1,16 +1,15 @@
 <p align="center">
-  <img width="600" height="200" src="https://nickware.group/repository/products/ff/logo.png">
+    <img width="600" height="200" src="https://nickware.group/repository/products/ff/logo.png"><br><br>
+    <a href="https://github.com/nickware44/facefull">Facefull</a> bridge library
 </p>
-
-[facefull official page](https://nickware.group/products/facefull)
-
-Facefull bridge library
 
 Facefull bridge is a communication system which connects application native backend (C++/Java/etc...) and Facefull user interface (runs through webview component). 
 This library allows you to use Facefull to create a user interface for native desktop applications using the webview component. In native mode you can use built-in event system to communicate with your native desktop application C++ backend.
 
 This library contains Facefull bridge interface and bridge implementation for wxWidgets (webview/webkit) and Qt5 (webkit) frameworks.
 You can use predefined implementations or create your own.
+
+[facefull official page](https://nickware.group/products/facefull)
 
 ----------------------------------------------------------------
 ### LICENCE
