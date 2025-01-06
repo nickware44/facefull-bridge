@@ -1,0 +1,22 @@
+cmake_minimum_required(VERSION 3.12)
+project(facefull_desktop_qt5webkit_example)
+
+set(CMAKE_CXX_STANDARD 14)
+
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
+
+add_executable(${PROJECT_NAME} main.cpp main.h mainwindow.cpp mainwindow.h mainwindow.ui)
+
+find_package(Qt5Widgets REQUIRED)
+#find_package(Qt5WebView REQUIRED)
+
+#find_package(QT NAMES Qt5 COMPONENTS Widgets REQUIRED)
+#find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets WebKit REQUIRED)
+target_link_libraries(${PROJECT_NAME} Qt5::Widgets)
+
+target_link_libraries(${PROJECT_NAME} facefull-bridge_static)
+include_directories(${CMAKE_SOURCE_DIR}/include)
+
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${SAMPLE_INSTALL_DIR})
