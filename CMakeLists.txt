@@ -48,6 +48,7 @@ install(DIRECTORY include DESTINATION ${CMAKE_SOURCE_DIR}/dist)
 if (FFB_EXAMPLES_BUILD)
     set(SAMPLE_INSTALL_DIR ${CMAKE_SOURCE_DIR}/dist/bin)
 
+    install(DIRECTORY examples/ui/ DESTINATION ${SAMPLE_INSTALL_DIR}/../ui)
     install(DIRECTORY deps/facefull/dist/ DESTINATION ${SAMPLE_INSTALL_DIR}/../ui/facefull)
     add_subdirectory(examples/wxwidgets)
     if (NOT WIN32)
