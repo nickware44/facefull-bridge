@@ -10,7 +10,7 @@
 #ifndef FACEFULL_BRIDGE_QT5WEBKIT_HPP
 #define FACEFULL_BRIDGE_QT5WEBKIT_HPP
 
-#ifdef __WIN32__
+#ifndef __WIN32__
 #include <facefull/bridge/interface.h>
 #include <iostream>
 #include <QMainWindow>
@@ -21,23 +21,25 @@
 class FacefullBridgeQt5WebKit : public FacefullBridgeInterface {
 private:
     QMainWindow *Frame;
-    QWebView *Window;
+    QWebView *WebView;
     bool CaptureFlag;
 
     void WebViewCommandExecutor(const std::string &data) override {
-        auto frame = Window->page()->mainFrame();
-        frame -> evaluateJavaScript(data);
+        auto frame = WebView->page()->mainFrame();
+        frame -> evaluateJavaScript(QString::fromStdString(data));
     }
 
-    void onEventReceive(const QString &event) {
-//        if (!WebView) return;
-        doEventCatch(event);
+    void onWindowMaximize() override {
+        if (isMaximized()) Frame -> setWindowState(Qt::WindowNoState);
+        else Frame -> setWindowState(Qt::WindowMaximized);
     }
 
     void onWindowMinimize() override {
+        Frame -> setWindowState(Frame->windowState() | Qt::WindowMinimized);
     }
 
     void onWindowMove() override {
+
     }
 
     void doEventSend(const std::string& comm, const std::string &data) override {
@@ -53,18 +55,18 @@ private:
 
     void onWindowClose() override {
         Frame -> hide();
-        ExitProcess(0);
+        exit(0);
     }
 
 public:
-    FacefullBridgeQt5WebKit(QMainWindow *frame, QWebView *webview, const std::string& window) {
+    FacefullBridgeQt5WebKit(QMainWindow *frame, QWebView *webview, const QUrl& window) {
         Frame = frame;
         WebView = webview;
 
-        connect(webview, SIGNAL(titleChanged(const QString&)), this, SLOT(onEventReceive(const QString&)));
+        QObject::connect(WebView, SIGNAL(titleChanged(const QString&)), Frame, SLOT(doBridgeEventReceive(const QString&)));
 
-        webview -> setUrl(QUrl(QString::fromStdString(window)));
-        webview -> page() -> mainFrame() -> addToJavaScriptWindowObject("bridge", (QMainWindow*)frame);
+        webview -> setUrl(window);
+        webview -> page() -> mainFrame() -> addToJavaScriptWindowObject("bridge", (QMainWindow*)Frame);
     }
 
     void setWebView(QWebView *webview) {
@@ -72,7 +74,7 @@ public:
     }
 
     bool isMaximized() {
-//        return WindowSize != Frame->GetClientRect();
+        return Frame -> windowState() == Qt::WindowMaximized;
     }
 };
 #endif

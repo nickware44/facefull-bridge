@@ -100,7 +100,7 @@ private:
 
     void onWindowClose() override {
         Frame -> Hide();
-        ExitProcess(0);
+//        exit(0);
     }
 
 public:

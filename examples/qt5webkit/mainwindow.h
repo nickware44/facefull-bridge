@@ -2,25 +2,28 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QVBoxLayout>
 #include <facefull/bridge/qt5webkit.hpp>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
-public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
-
 private:
     Ui::MainWindow *ui;
     QVBoxLayout *MainLayout;
     QWidget *MainWidget;
     QWebView *WebView;
     FacefullBridgeQt5WebKit *Bridge;
+
+public slots:
+    void doBridgeEventReceive(const QString&) const;
+
+public:
+    MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
 };
 
 #endif //MAINWINDOW_H

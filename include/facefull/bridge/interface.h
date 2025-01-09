@@ -21,6 +21,7 @@ public:
     void doEventAttach(const std::string &eventname, EventHandler function);
     virtual void doEventSend(const std::string &eventname, const std::string &data);
     bool isWindowReady() const;
+    void doEventCatch(const std::string&);
     ~FacefullBridgeInterface() = default;
 private:
     std::multimap<std::string, EventHandler> Events;
@@ -31,7 +32,6 @@ protected:
     virtual void onWindowMaximize() = 0;
     virtual void onWindowMinimize() = 0;
     virtual void onWindowClose() = 0;
-    void doEventCatch(const std::string&);
     virtual void WebViewCommandExecutor(const std::string&) = 0;
 };
 
