@@ -126,6 +126,8 @@ public:
     void setWebView(wxWebView *webview) {
         WebView = webview;
         WebView -> Bind(wxEVT_WEBVIEW_TITLE_CHANGED, &FacefullBridgeWx::onEventReceive, this);
+        WebView -> Bind(wxEVT_WEBVIEW_SCRIPT_MESSAGE_RECEIVED, &FacefullBridgeWx::onEventReceive, this);
+        WebView -> AddScriptMessageHandler("facefullio");
     }
 
     bool isMaximized() {
