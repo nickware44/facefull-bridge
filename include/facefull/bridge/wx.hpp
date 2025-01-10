@@ -25,6 +25,8 @@ private:
     wxPoint PointerPosition;
     wxTimer *WindowTimer;
     bool CaptureFlag;
+    bool PreventDefaultHandlerWindowReady;
+    bool PreventDefaultHandlerWindowClose;
 
     void WebViewCommandExecutor(const std::string &str) override {
         wxCommandEvent event(wxEVT_COMMAND_ENTER);
@@ -98,16 +100,23 @@ private:
     }
 
     void onWindowReady() override {
-//        Frame -> Show();
+        if (!PreventDefaultHandlerWindowReady) {
+            Frame -> Show();
+        }
     }
 
     void onWindowClose() override {
-        Frame -> Hide();
-        exit(0);
+        if (!PreventDefaultHandlerWindowClose) {
+            Frame -> Hide();
+            exit(0);
+        }
     }
 
 public:
     FacefullBridgeWx(wxApp *app, wxFrame *frame, wxWebView *webview, const std::string& window) {
+        PreventDefaultHandlerWindowReady = false;
+        PreventDefaultHandlerWindowClose = false;
+
         WindowTimer = nullptr;
         CaptureFlag = false;
 
@@ -127,6 +136,14 @@ public:
         WebView -> Bind(wxEVT_WEBVIEW_TITLE_CHANGED, &FacefullBridgeWx::onEventReceive, this);
         WebView -> Bind(wxEVT_WEBVIEW_SCRIPT_MESSAGE_RECEIVED, &FacefullBridgeWx::onEventReceive, this);
         WebView -> AddScriptMessageHandler("facefullio");
+    }
+
+    void setPreventDefaultHandlerWindowReady(bool prevent) {
+        PreventDefaultHandlerWindowReady = prevent;
+    }
+
+    void setPreventDefaultHandlerWindowClose(bool prevent) {
+        PreventDefaultHandlerWindowClose = prevent;
     }
 
     bool isMaximized() {

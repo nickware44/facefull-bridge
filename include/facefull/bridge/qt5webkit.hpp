@@ -25,6 +25,8 @@ private:
     QWebView *WebView;
     QPoint MousePosition;
     bool CaptureFlag;
+    bool PreventDefaultHandlerWindowReady;
+    bool PreventDefaultHandlerWindowClose;
 
     void WebViewCommandExecutor(const std::string &data) override {
         auto frame = WebView->page()->mainFrame();
@@ -54,12 +56,16 @@ private:
     }
 
     void onWindowReady() override {
-//        Frame -> show(); // doPreventDefaultWindowReadyEvent
+        if (!PreventDefaultHandlerWindowReady) {
+            Frame -> show();
+        }
     }
 
     void onWindowClose() override {
-        Frame -> hide();
-        exit(0);
+        if (!PreventDefaultHandlerWindowClose) {
+            Frame -> hide();
+            exit(0);
+        }
     }
 
 public:
@@ -95,6 +101,14 @@ public:
 
     void setWebView(QWebView *webview) {
         WebView = webview;
+    }
+
+    void setPreventDefaultHandlerWindowReady(bool prevent) {
+        PreventDefaultHandlerWindowReady = prevent;
+    }
+
+    void setPreventDefaultHandlerWindowClose(bool prevent) {
+        PreventDefaultHandlerWindowClose = prevent;
     }
 
     bool isMaximized() {

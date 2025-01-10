@@ -24,10 +24,6 @@ MainWindow::MainWindow(QWidget *parent)
     Bridge = new FacefullBridgeQt5WebKit(this, WebView, QUrl::fromLocalFile(QString::fromStdString(respath)));
 
     std::cout << "Window loaded" << std::endl;
-
-    Bridge -> doEventAttach("doWindowReady", [this](const std::string& data) {
-        show();
-    });
 }
 
 void MainWindow::doBridgeEventReceive(const QString &data) const {
