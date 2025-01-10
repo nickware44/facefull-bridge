@@ -14,6 +14,7 @@
 #include <facefull/bridge/interface.h>
 #include <iostream>
 #include <QMainWindow>
+#include <QMouseEvent>
 #include <QtWebKitWidgets/QWebView>
 #include <QtWebKitWidgets/QWebPage>
 #include <QtWebKitWidgets/QWebFrame>
@@ -22,6 +23,7 @@ class FacefullBridgeQt5WebKit : public FacefullBridgeInterface {
 private:
     QMainWindow *Frame;
     QWebView *WebView;
+    QPoint MousePosition;
     bool CaptureFlag;
 
     void WebViewCommandExecutor(const std::string &data) override {
@@ -39,7 +41,9 @@ private:
     }
 
     void onWindowMove() override {
-
+        if (isMaximized()) return;
+        CaptureFlag = true;
+        MousePosition = QPoint(0, 0);
     }
 
     void doEventSend(const std::string& comm, const std::string &data) override {
@@ -50,7 +54,7 @@ private:
     }
 
     void onWindowReady() override {
-//        Frame -> show();
+//        Frame -> show(); // doPreventDefaultWindowReadyEvent
     }
 
     void onWindowClose() override {
@@ -60,13 +64,33 @@ private:
 
 public:
     FacefullBridgeQt5WebKit(QMainWindow *frame, QWebView *webview, const QUrl& window) {
+        CaptureFlag = false;
         Frame = frame;
         WebView = webview;
 
         QObject::connect(WebView, SIGNAL(titleChanged(const QString&)), Frame, SLOT(doBridgeEventReceive(const QString&)));
 
-        webview -> setUrl(window);
-        webview -> page() -> mainFrame() -> addToJavaScriptWindowObject("bridge", (QMainWindow*)Frame);
+        WebView -> installEventFilter(Frame);
+        WebView -> setUrl(window);
+        WebView -> page() -> mainFrame() -> addToJavaScriptWindowObject("bridge", (QMainWindow*)Frame);
+    }
+
+    void doMoveWindow(QMouseEvent *evt) {
+        if (!CaptureFlag) return;
+
+        if (evt->type() == QEvent::MouseMove) {
+            if (MousePosition.x() && MousePosition.y()) {
+                auto d = evt->globalPos() - MousePosition;
+                auto wx = Frame->x() + d.x();
+                auto wy = Frame->y() + d.y();
+                Frame -> move(wx, wy);
+            }
+
+            MousePosition = evt -> globalPos();
+        } else if (evt->type() == QEvent::MouseButtonRelease) {
+            MousePosition = QPoint(0, 0);
+            CaptureFlag = false;
+        }
     }
 
     void setWebView(QWebView *webview) {

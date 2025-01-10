@@ -34,6 +34,11 @@ void MainWindow::doBridgeEventReceive(const QString &data) const {
     Bridge -> doEventCatch(data.toStdString());
 }
 
+bool MainWindow::eventFilter(QObject* object, QEvent* event) {
+    Bridge -> doMoveWindow((QMouseEvent*)event);
+    return false;
+}
+
 MainWindow::~MainWindow() {
     delete ui;
 }

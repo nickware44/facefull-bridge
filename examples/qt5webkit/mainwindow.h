@@ -17,6 +17,8 @@ private:
     QWidget *MainWidget;
     QWebView *WebView;
     FacefullBridgeQt5WebKit *Bridge;
+protected:
+    bool eventFilter(QObject* object, QEvent* event) override;
 
 public slots:
     void doBridgeEventReceive(const QString&) const;
