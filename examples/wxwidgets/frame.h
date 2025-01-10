@@ -9,6 +9,9 @@ class Frame : public wxFrame {
 private:
     wxWebView *WebView;
     FacefullBridgeWx *Bridge;
+#ifdef __WIN32__
+    WXLRESULT MSWWindowProc(WXUINT nMsg, WXWPARAM wParam, WXLPARAM lParam) wxOVERRIDE;
+#endif
 public:
     Frame(wxApp *app, const wxString& title);
 };

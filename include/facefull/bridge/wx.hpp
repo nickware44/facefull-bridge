@@ -20,7 +20,7 @@ class FacefullBridgeWx : public FacefullBridgeInterface {
 private:
     wxWebView *WebView;
     wxFrame *Frame;
-    wxRect WindowSize, ScreenSize;
+    wxRect WindowSize;
     wxPoint WindowPosition;
     wxPoint PointerPosition;
     wxTimer *WindowTimer;
@@ -60,8 +60,10 @@ private:
     }
 
     void onWindowMaximize() override {
-        if (WindowSize == Frame->GetClientRect()) {
+        if (!isMaximized()) {
+            wxDisplay display;
             WindowPosition = Frame -> GetScreenPosition();
+            WindowSize = Frame -> GetClientRect();
 #ifdef __WIN32__
             APPBARDATA abd;
             abd.cbSize = sizeof(APPBARDATA);
@@ -71,7 +73,8 @@ private:
             else
 #endif
             Frame -> SetPosition(wxPoint(0, 0));
-            Frame -> SetClientSize(ScreenSize);
+            Frame -> Maximize();
+            Frame -> SetClientSize(display.GetClientArea());
         } else {
             Frame -> Maximize(false);
             WindowTimer = new wxTimer;
@@ -100,7 +103,7 @@ private:
 
     void onWindowClose() override {
         Frame -> Hide();
-//        exit(0);
+        exit(0);
     }
 
 public:
@@ -116,10 +119,6 @@ public:
         WebView -> Bind(wxEVT_WEBVIEW_SCRIPT_MESSAGE_RECEIVED, &FacefullBridgeWx::onEventReceive, this);
         WebView -> AddScriptMessageHandler("facefullio");
 
-        auto display = new wxDisplay();
-        WindowSize = Frame -> GetClientRect();
-        ScreenSize = display -> GetClientArea();
-
         WebView -> LoadURL(window);
     }
 
@@ -131,7 +130,7 @@ public:
     }
 
     bool isMaximized() {
-        return WindowSize != Frame->GetClientRect();
+        return Frame->IsMaximized();
     }
 };
 
