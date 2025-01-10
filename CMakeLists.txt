@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(facefull-bridge VERSION 1.5.0 DESCRIPTION "Facefull bridge library")
+project(facefull-bridge VERSION 1.0.0 DESCRIPTION "Facefull bridge library")
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -12,7 +12,12 @@ set(TARGET_SOURCE
 add_library(objlib OBJECT ${TARGET_SOURCE})
 set_property(TARGET objlib PROPERTY POSITION_INDEPENDENT_CODE ON)
 
-OPTION(FFB_EXAMPLES_BUILD "Build Facefull bridge examples" ON)
+OPTION(FFB_WXWIDGETS_EXAMPLE_BUILD "Build Facefull bridge wxWidgets example" ON)
+OPTION(FFB_QT5WEBKIT_EXAMPLE_BUILD "Build Facefull bridge Qt5WebKit example" ON)
+
+if (WIN32)
+    set(FFB_QT5WEBKIT_EXAMPLE_BUILD OFF)
+endif()
 
 function(build_ffb LIBTYPE)
     message("Building ${LIBTYPE} variant")
@@ -30,7 +35,6 @@ function(build_ffb LIBTYPE)
             SOVERSION ${PROJECT_VERSION_MAJOR})
 
     include_directories(include/)
-#    include_directories(3rdparty/)
 endfunction()
 
 build_ffb(shared)
@@ -45,13 +49,17 @@ endif()
 install(TARGETS ${PROJECT_NAME}_static ARCHIVE DESTINATION ${CMAKE_SOURCE_DIR}/dist/lib NAMELINK_COMPONENT)
 install(DIRECTORY include DESTINATION ${CMAKE_SOURCE_DIR}/dist)
 
-if (FFB_EXAMPLES_BUILD)
-    set(SAMPLE_INSTALL_DIR ${CMAKE_SOURCE_DIR}/dist/bin)
+if (FFB_WXWIDGETS_EXAMPLE_BUILD OR FFB_QT5WEBKIT_EXAMPLE_BUILD)
+    set(SAMPLE_INSTALL_DIR ${CMAKE_SOURCE_DIR}/dist)
 
-    install(DIRECTORY examples/ui/ DESTINATION ${SAMPLE_INSTALL_DIR}/../ui)
-    install(DIRECTORY deps/facefull/dist/ DESTINATION ${SAMPLE_INSTALL_DIR}/../ui/facefull)
-    add_subdirectory(examples/wxwidgets)
-    if (NOT WIN32)
+    install(DIRECTORY examples/ui/ DESTINATION ${SAMPLE_INSTALL_DIR}/ui)
+    install(DIRECTORY deps/facefull/dist/ DESTINATION ${SAMPLE_INSTALL_DIR}/ui/facefull)
+
+    if (FFB_WXWIDGETS_EXAMPLE_BUILD)
+        add_subdirectory(examples/wxwidgets)
+    endif()
+
+    if (FFB_QT5WEBKIT_EXAMPLE_BUILD)
         add_subdirectory(examples/qt5webkit)
     endif()
 endif()
