@@ -1,5 +1,5 @@
 <p align="center">
-    <img width="600" height="200" src="https://nickware.group/repository/products/ff/logo.png"><br><br>
+    <img width="600" height="200" src="https://nickware.group/repository/products/ff/logonew_t.png"><br><br>
     <a href="https://github.com/nickware44/facefull">Facefull</a> bridge library
 </p>
 
