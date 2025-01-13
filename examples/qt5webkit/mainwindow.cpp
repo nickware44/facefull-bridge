@@ -20,8 +20,8 @@ MainWindow::MainWindow(QWidget *parent)
     MainWidget -> setLayout(MainLayout);
     setCentralWidget(MainWidget);
 
-    auto respath = QDir::currentPath().toStdString()+"/../ui/window.html";
-    Bridge = new FacefullBridgeQt5WebKit(this, WebView, QUrl::fromLocalFile(QString::fromStdString(respath)));
+    auto respath = "qrc:/ui/window.html";
+    Bridge = new FacefullBridgeQt5WebKit(this, WebView, QUrl(QString::fromStdString(respath)));
 
     std::cout << "Window loaded" << std::endl;
 }

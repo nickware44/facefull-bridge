@@ -1,0 +1,24 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource prefix="/ui/">
+        <file alias="window.html">../ui/window.html</file>
+    </qresource>
+    <qresource prefix="/ui/src/">
+        <file alias="app.js">../ui/src/app.js</file>
+        <file alias="style.css">../ui/src/style.css</file>
+        <file alias="style-light.css">../ui/src/style-light.css</file>
+        <file alias="locale-de.css">../ui/src/locale-de.css</file>
+        <file alias="locale-en.css">../ui/src/locale-en.css</file>
+        <file alias="locale-ru.css">../ui/src/locale-ru.css</file>
+    </qresource>
+    <qresource prefix="/ui/res/">
+        <file alias="icon.png">../ui/res/icon.png</file>
+    </qresource>
+    <qresource prefix="/ui/facefull/">
+        <file alias="facefull.min.js">../ui/facefull/facefull.min.js</file>
+        <file alias="facefull.min.css">../ui/facefull/facefull.min.css</file>
+        <file alias="theme-light.min.css">../ui/facefull/theme-light.min.css</file>
+    </qresource>
+    <qresource prefix="/ui/facefull/fonts">
+        <file alias="md-embedded.woff">../ui/facefull/fonts/md-embedded.woff</file>
+    </qresource>
+</RCC>

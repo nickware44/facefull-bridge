@@ -70,6 +70,9 @@ private:
 
 public:
     FacefullBridgeQt5WebKit(QMainWindow *frame, QWebView *webview, const QUrl& window) {
+        PreventDefaultHandlerWindowReady = false;
+        PreventDefaultHandlerWindowClose = false;
+
         CaptureFlag = false;
         Frame = frame;
         WebView = webview;

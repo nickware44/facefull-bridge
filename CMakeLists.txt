@@ -52,8 +52,13 @@ install(DIRECTORY include DESTINATION ${CMAKE_SOURCE_DIR}/dist)
 if (FFB_WXWIDGETS_EXAMPLE_BUILD OR FFB_QT5WEBKIT_EXAMPLE_BUILD)
     set(SAMPLE_INSTALL_DIR ${CMAKE_SOURCE_DIR}/dist)
 
-    install(DIRECTORY examples/ui/ DESTINATION ${SAMPLE_INSTALL_DIR}/ui)
-    install(DIRECTORY deps/facefull/dist/ DESTINATION ${SAMPLE_INSTALL_DIR}/ui/facefull)
+    add_custom_command(
+            TARGET ${PROJECT_NAME} PRE_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_SOURCE_DIR}/deps/facefull/dist/
+            ${CMAKE_SOURCE_DIR}/examples/ui/facefull
+            COMMENT "Copy Facefull frontend library files"
+    )
 
     if (FFB_WXWIDGETS_EXAMPLE_BUILD)
         add_subdirectory(examples/wxwidgets)
@@ -62,4 +67,6 @@ if (FFB_WXWIDGETS_EXAMPLE_BUILD OR FFB_QT5WEBKIT_EXAMPLE_BUILD)
     if (FFB_QT5WEBKIT_EXAMPLE_BUILD)
         add_subdirectory(examples/qt5webkit)
     endif()
+
+    install(DIRECTORY examples/ui/ DESTINATION ${SAMPLE_INSTALL_DIR}/ui)
 endif()
