@@ -89,7 +89,10 @@ function App() {
         facefull.doUpdateAllScrollboxes();
     }
 
-    facefull.doUpdateAllScrollboxes();
+    // workaround for scrollbar update on main window after app startup
+    setTimeout(function () {
+        facefull.doUpdateAllScrollboxes();
+    }, 50);
 
     facefull.Circlebars["P1CB1"].setPos(90);
     facefull.Circlebars["P1CB2"].setPos(10);

@@ -8,11 +8,10 @@ Frame::Frame(wxApp *app, const wxString& title) : wxFrame(nullptr, wxID_ANY, tit
     Centre();
     auto apath = wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath().ToStdString();
 
+    std::cout  << "WebView backend: " << wxWebView::GetBackendVersionInfo().ToString() << std::endl;
     if (wxWebView::IsBackendAvailable(wxWebViewBackendEdge)) {
-        std::cout << "Using Edge backend on Windows" << std::endl;
         WebView = wxWebView::New(this, wxID_ANY, wxEmptyString, wxDefaultPosition, GetClientSize(), wxWebViewBackendEdge, wxNO_BORDER);
     } else {
-        std::cout << "Using default backend" << std::endl;
         WebView = wxWebView::New(this, wxID_ANY, wxEmptyString, wxDefaultPosition, GetClientSize(), wxWebViewBackendDefault, wxNO_BORDER);
     }
 
