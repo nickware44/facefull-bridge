@@ -4,7 +4,7 @@
 // Author:      Nickolay Babbysh
 // Created:     02.10.2021
 // Copyright:   (c) NickWare Group
-// Licence:
+// Licence:     MIT licence
 /////////////////////////////////////////////////////////////////////////////
 
 #include <facefull/bridge/interface.h>
