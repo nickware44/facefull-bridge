@@ -48,14 +48,8 @@ private:
         MousePosition = QPoint(0, 0);
     }
 
-    void doEventSend(const std::string& comm, const std::string &data) override {
-        QMetaObject::invokeMethod((QMainWindow*)Frame
-                , "BridgeEventHandler"
-                , Qt::AutoConnection
-                , Q_ARG(QString, QString::fromStdString(comm)), Q_ARG(QString, QString::fromStdString(data)));
-    }
-
     void onWindowReady() override {
+        FacefullBridgeInterface::doEventSend("doConnectQtBridgeEventHandler", "");
         if (!PreventDefaultHandlerWindowReady) {
             Frame -> show();
         }
@@ -100,6 +94,13 @@ public:
             MousePosition = QPoint(0, 0);
             CaptureFlag = false;
         }
+    }
+
+    void doEventSend(const std::string& comm, const std::string &data) override {
+        QMetaObject::invokeMethod((QMainWindow*)Frame
+                , "BridgeEventHandler"
+                , Qt::AutoConnection
+                , Q_ARG(QString, QString::fromStdString(comm)), Q_ARG(QString, QString::fromStdString(data)));
     }
 
     void setWebView(QWebView *webview) {
