@@ -22,6 +22,8 @@ protected:
 
 public slots:
     void doBridgeEventReceive(const QString&) const;
+signals:
+    void BridgeEventHandler(QString, QString);
 
 public:
     MainWindow(QWidget *parent = nullptr);

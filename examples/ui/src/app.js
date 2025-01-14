@@ -8,6 +8,10 @@ window.addEventListener('load', function () {
     App();
 });
 
+facefull.doEventHandlerAttach("doTestMessage", function(data) {
+    facefull.doEventSend("onTestMessage", data);
+});
+
 function doFillDictionary() {
     facefull.Locales.doAddToDictionary("English", "P2E", "Disabled");
     facefull.Locales.doAddToDictionary("English", "IPC0", "Selected color: yellow");

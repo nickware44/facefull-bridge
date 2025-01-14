@@ -18,6 +18,14 @@ Frame::Frame(wxApp *app, const wxString& title) : wxFrame(nullptr, wxID_ANY, tit
     Bridge = new FacefullBridgeWx(app, this, WebView, "file://"+apath+"/../ui/window.html");
 
     std::cout << "Window loaded" << std::endl;
+
+    Bridge -> doEventAttach("onTestMessage", [this](const std::string& data) {
+        std::cout << data << std::endl;
+    });
+
+    Bridge -> doEventAttach("doWindowReady", [this](const std::string& data) {
+        Bridge -> doEventSend("doTestMessage", "Bridge event system test message");
+    });
 }
 
 #ifdef __WIN32__
