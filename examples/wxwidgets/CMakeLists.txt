@@ -12,8 +12,8 @@ target_link_libraries(${PROJECT_NAME} ${wxWidgets_LIBRARIES} -static-libgcc -sta
 target_link_libraries(${PROJECT_NAME} facefull-bridge_static)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${INSTALL_DIR}/bin)
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${INSTALL_DIR}bin)
 
 if (WIN32)
-    install(FILES ${CMAKE_SOURCE_DIR}/3rdparty/win64/WebView2Loader.dll DESTINATION ${INSTALL_DIR}/bin)
+    install(FILES ${CMAKE_SOURCE_DIR}/3rdparty/win64/WebView2Loader.dll DESTINATION ${INSTALL_DIR}bin)
 endif()

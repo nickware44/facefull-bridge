@@ -17,4 +17,4 @@ target_link_libraries(${PROJECT_NAME} Qt5WebKit Qt5WebKitWidgets)
 target_link_libraries(${PROJECT_NAME} facefull-bridge_static)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${INSTALL_DIR}/bin)
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${INSTALL_DIR}bin)
