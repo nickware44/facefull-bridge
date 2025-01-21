@@ -29,3 +29,10 @@ Supported OS:
 - Linux (uses WebKit)
 
 ----------------------------------------------------------------
+### HOW TO BUILD
+All files will be in dist directory.
+#### Windows
+Just run build.cmd script.
+
+#### Linux
+Just run build.sh script.
