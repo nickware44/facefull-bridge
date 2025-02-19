@@ -1,3 +1,4 @@
 [submodule "deps/facefull"]
 	path = deps/facefull
 	url = https://github.com/nickware44/facefull.git
+	branch = master
