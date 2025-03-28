@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(facefull-bridge VERSION 1.0.0 DESCRIPTION "Facefull bridge library")
+project(facefull-bridge VERSION 1.0.2 DESCRIPTION "Facefull bridge library")
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -7,13 +7,15 @@ set(TARGET_SOURCE
         src/interface.cpp
         include/facefull/bridge/interface.h
         include/facefull/bridge/wx.hpp
-        include/facefull/bridge/qt5webkit.hpp)
+        include/facefull/bridge/qt5webkit.hpp
+        include/facefull/bridge/web.hpp)
 
 add_library(objlib OBJECT ${TARGET_SOURCE})
 set_property(TARGET objlib PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 OPTION(FFB_WXWIDGETS_EXAMPLE_BUILD "Build Facefull bridge wxWidgets example" ON)
 OPTION(FFB_QT5WEBKIT_EXAMPLE_BUILD "Build Facefull bridge Qt5WebKit example" ON)
+OPTION(FFB_WB_EXAMPLE_BUILD "Build Facefull web bridge example" ON)
 
 if (WIN32)
     set(FFB_QT5WEBKIT_EXAMPLE_BUILD OFF)
@@ -35,6 +37,7 @@ function(build_ffb LIBTYPE)
             SOVERSION ${PROJECT_VERSION_MAJOR})
 
     include_directories(include/)
+    include_directories(deps/cpp-httplib)
 endfunction()
 
 build_ffb(shared)
@@ -53,7 +56,9 @@ endif()
 install(TARGETS ${PROJECT_NAME}_static ARCHIVE DESTINATION ${INSTALL_DIR}/lib NAMELINK_COMPONENT)
 install(DIRECTORY include DESTINATION ${INSTALL_DIR})
 
-if (FFB_WXWIDGETS_EXAMPLE_BUILD OR FFB_QT5WEBKIT_EXAMPLE_BUILD)
+if (FFB_WXWIDGETS_EXAMPLE_BUILD OR FFB_QT5WEBKIT_EXAMPLE_BUILD OR FFB_WB_EXAMPLE_BUILD)
+    install(DIRECTORY examples/ui/ DESTINATION ${INSTALL_DIR}/ui)
+
     add_custom_command(
             TARGET ${PROJECT_NAME} PRE_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_directory
@@ -70,5 +75,12 @@ if (FFB_WXWIDGETS_EXAMPLE_BUILD OR FFB_QT5WEBKIT_EXAMPLE_BUILD)
         add_subdirectory(examples/qt5webkit)
     endif()
 
-    install(DIRECTORY examples/ui/ DESTINATION ${INSTALL_DIR}/ui)
+    if (FFB_WB_EXAMPLE_BUILD)
+        add_subdirectory(examples/web_bridge)
+        INSTALL(CODE "execute_process( \
+            COMMAND ${CMAKE_COMMAND} -E create_symlink \
+            ${INSTALL_DIR}/ui/window.html \
+            ${INSTALL_DIR}/ui/index.html)"
+        )
+    endif()
 endif()

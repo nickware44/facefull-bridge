@@ -5,11 +5,31 @@ let List3 = [];
 facefullCreate(true);
 
 window.addEventListener('load', function () {
+    // if it's not native window but the web page
+    if (location.pathname === "/") {
+        facefull.setNative(false);
+        document.getElementById("WH").classList.add("Hidden");
+
+        facefull.doEventSend("getTestData", "request from frontend", {
+            type: "backend",
+            event_ok: "onTestData",
+            event_err: "onError"
+        });
+    }
+
     App();
 });
 
 facefull.doEventHandlerAttach("doTestMessage", function(data) {
     facefull.doEventSend("onTestMessage", data);
+});
+
+facefull.doEventHandlerAttach("onTestData", function(data) {
+    AlertShow("Message", data, "info");
+});
+
+facefull.doEventHandlerAttach("onError", function(data) {
+    AlertShow("Message", "Error retrieving data over web bridge", "error");
 });
 
 function doFillDictionary() {
