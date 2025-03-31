@@ -9,6 +9,13 @@ This library allows you to use Facefull to create a user interface for native de
 This library contains Facefull bridge interface and bridge implementation for wxWidgets (webview/webkit) and Qt5 (webkit) frameworks.
 You can use predefined implementations or create your own.
 
+A web bridge mode is also available. In this mode, the backend application runs an HTTP server and provides communication between the native C++ code and Facefull frontend via the bridge system.
+
+<p align="center">
+    <img width="820" height="640" src="https://nickware.group/repository/products/ff/scheme_full_en.png"><br><br>
+</p>
+
+
 [facefull official page](https://nickware.group/products/facefull)
 
 ----------------------------------------------------------------
@@ -27,6 +34,13 @@ Supported OS:
 
 Supported OS:
 - Linux (uses WebKit)
+
+#### 3. [Bridge for web](examples/web_bridge)
+
+Supported OS:
+- Windows
+- Linux
+
 
 ----------------------------------------------------------------
 ### HOW TO BUILD
