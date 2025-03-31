@@ -77,10 +77,5 @@ if (FFB_WXWIDGETS_EXAMPLE_BUILD OR FFB_QT5WEBKIT_EXAMPLE_BUILD OR FFB_WB_EXAMPLE
 
     if (FFB_WB_EXAMPLE_BUILD)
         add_subdirectory(examples/web_bridge)
-        INSTALL(CODE "execute_process( \
-            COMMAND ${CMAKE_COMMAND} -E create_symlink \
-            ${INSTALL_DIR}/ui/window.html \
-            ${INSTALL_DIR}/ui/index.html)"
-        )
     endif()
 endif()

@@ -7,6 +7,10 @@ add_executable(${PROJECT_NAME} main.cpp)
 
 target_link_libraries(${PROJECT_NAME} -static-libgcc -static-libstdc++)
 
+if (WIN32)
+    target_link_libraries(${PROJECT_NAME} -lws2_32)
+endif()
+
 target_link_libraries(${PROJECT_NAME} facefull-bridge_static)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 

@@ -15,7 +15,7 @@ Frame::Frame(wxApp *app, const wxString& title) : wxFrame(nullptr, wxID_ANY, tit
         WebView = wxWebView::New(this, wxID_ANY, wxEmptyString, wxDefaultPosition, GetClientSize(), wxWebViewBackendDefault, wxNO_BORDER);
     }
 
-    Bridge = new FacefullBridgeWx(app, this, WebView, "file://"+apath+"/../ui/window.html");
+    Bridge = new FacefullBridgeWx(app, this, WebView, "file://"+apath+"/../ui/index.html");
 
     std::cout << "Window loaded" << std::endl;
 
