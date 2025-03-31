@@ -24,6 +24,7 @@ private:
     wxPoint WindowPosition;
     wxPoint PointerPosition;
     wxTimer *WindowTimer;
+    std::string WindowLocation;
     bool CaptureFlag;
     bool PreventDefaultHandlerWindowReady;
     bool PreventDefaultHandlerWindowClose;
@@ -35,7 +36,7 @@ private:
     }
 
     void doUISync(wxCommandEvent &evt) {
-        WebView -> RunScript(evt.GetString());
+        if (WebView) WebView -> RunScript(evt.GetString());
     }
 
     void doMoveWindow(wxMouseEvent &evt) {
@@ -58,7 +59,6 @@ private:
 
     void doWindowPosReset(wxTimerEvent&) {
         Frame -> SetPosition(WindowPosition);
-        delete WindowTimer;
     }
 
     void onWindowMaximize() override {
@@ -79,8 +79,6 @@ private:
             Frame -> SetClientSize(display.GetClientArea());
         } else {
             Frame -> Maximize(false);
-            WindowTimer = new wxTimer;
-            WindowTimer -> Bind(wxEVT_TIMER, &FacefullBridgeWx::doWindowPosReset, this);
             WindowTimer -> StartOnce(1);
             Frame -> SetClientSize(WindowSize);
         }
@@ -117,7 +115,10 @@ public:
         PreventDefaultHandlerWindowReady = false;
         PreventDefaultHandlerWindowClose = false;
 
-        WindowTimer = nullptr;
+        WindowLocation = window;
+
+        WindowTimer = new wxTimer;
+        WindowTimer -> Bind(wxEVT_TIMER, &FacefullBridgeWx::doWindowPosReset, this);
         CaptureFlag = false;
 
         Frame = frame;
@@ -133,9 +134,12 @@ public:
 
     void setWebView(wxWebView *webview) {
         WebView = webview;
-        WebView -> Bind(wxEVT_WEBVIEW_TITLE_CHANGED, &FacefullBridgeWx::onEventReceive, this);
-        WebView -> Bind(wxEVT_WEBVIEW_SCRIPT_MESSAGE_RECEIVED, &FacefullBridgeWx::onEventReceive, this);
-        WebView -> AddScriptMessageHandler("facefullio");
+        if (webview) {
+            WebView -> Bind(wxEVT_WEBVIEW_TITLE_CHANGED, &FacefullBridgeWx::onEventReceive, this);
+            WebView -> Bind(wxEVT_WEBVIEW_SCRIPT_MESSAGE_RECEIVED, &FacefullBridgeWx::onEventReceive, this);
+            WebView -> AddScriptMessageHandler("facefullio");
+            WebView -> LoadURL(WindowLocation);
+        }
     }
 
     void setPreventDefaultHandlerWindowReady(bool prevent) {
@@ -148,6 +152,13 @@ public:
 
     bool isMaximized() {
         return Frame->IsMaximized();
+    }
+
+    ~FacefullBridgeWx() {
+        Frame -> Unbind(wxEVT_COMMAND_ENTER, &FacefullBridgeWx::doUISync, this);
+        WebView -> Unbind(wxEVT_WEBVIEW_TITLE_CHANGED, &FacefullBridgeWx::onEventReceive, this);
+        WebView -> Unbind(wxEVT_WEBVIEW_SCRIPT_MESSAGE_RECEIVED, &FacefullBridgeWx::onEventReceive, this);
+        delete WindowTimer;
     }
 };
 
