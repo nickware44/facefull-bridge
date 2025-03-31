@@ -1,6 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
     <qresource prefix="/ui/">
-        <file alias="index.html">../ui/window.html</file>
+        <file alias="index.html">../ui/index.html</file>
     </qresource>
     <qresource prefix="/ui/src/">
         <file alias="app.js">../ui/src/app.js</file>
